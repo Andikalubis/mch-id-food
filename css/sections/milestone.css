@@ -1,0 +1,256 @@
+/* =========================================================
+   SECTION: MILESTONE STATUS CARGO DI TERMINAL
+   Alur tahap (#ms-flow) di-render ulang oleh JS sesuai komoditas terpilih.
+   ========================================================= */
+
+.milestone {
+  position: relative;
+  z-index: 5;
+  /* menu dropdown di atas card sebelahnya */
+  flex: 1 1 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 22px;
+}
+
+.milestone .card__icon {
+  width: 26px;
+  height: 26px;
+}
+
+/* ---------- Pemilih komoditas ---------- */
+.milestone__picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 240px;
+}
+
+.milestone__picker-label {
+  font-size: 13px;
+  color: var(--c-muted);
+  white-space: nowrap;
+}
+
+.milestone__picker .dd {
+  min-width: 200px;
+}
+
+.milestone__picker .dd__menu {
+  min-width: 260px;
+}
+
+/* ---------- Animasi saat komoditas berganti ---------- */
+.flow.is-entering {
+  animation: flow-in 320ms var(--ease) both;
+}
+
+@keyframes flow-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+.flow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 8px 0;
+}
+
+/* ---------- Step ---------- */
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 130px;
+  flex: none;
+  text-align: center;
+}
+
+.step__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--c-step-idle);
+  color: #FFFFFF;
+  cursor: default;
+  transition: transform var(--t-med) var(--ease), box-shadow var(--t-med) var(--ease), background-color var(--t-fast);
+}
+
+.step__icon svg {
+  width: 30px;
+  height: 30px;
+}
+
+.step__name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--c-title);
+}
+
+.step .chip {
+  min-width: 110px;
+}
+
+.step:hover .step__icon {
+  transform: translateY(-3px) scale(1.06);
+}
+
+.step:hover .chip {
+  transform: scale(1.04);
+}
+
+/* Aktif: aksen + cincin berdenyut (box-shadow, agar ::before/::after tetap untuk tooltip) */
+.step.is-active .step__icon {
+  background: var(--c-accent);
+  box-shadow: 0 4px 12px rgba(21, 101, 232, .3);
+  animation: step-ring 2s var(--ease) infinite;
+}
+
+@keyframes step-ring {
+  0% {
+    box-shadow: 0 4px 12px rgba(21, 101, 232, .3), 0 0 0 0 rgba(21, 101, 232, .35);
+  }
+
+  70% {
+    box-shadow: 0 4px 12px rgba(21, 101, 232, .3), 0 0 0 12px rgba(21, 101, 232, 0);
+  }
+
+  100% {
+    box-shadow: 0 4px 12px rgba(21, 101, 232, .3), 0 0 0 0 rgba(21, 101, 232, 0);
+  }
+}
+
+/* Selesai */
+.step.is-done .step__icon {
+  background: var(--c-success);
+}
+
+.step.is-done .step__icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+/* Pending */
+.step.is-pending:hover .step__icon {
+  background: #7A8698;
+}
+
+/* ---------- Garis penghubung ---------- */
+.step__line {
+  position: relative;
+  flex: 1;
+  height: 2px;
+  margin-top: 31px;
+  background: var(--c-connector);
+}
+
+.step__line::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: -5px;
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid var(--c-connector);
+  border-right: 2px solid var(--c-connector);
+  transform: rotate(45deg);
+}
+
+.step__line.is-done {
+  background: var(--c-success);
+}
+
+.step__line.is-done::after {
+  border-color: var(--c-success);
+}
+
+/* Garis menuju step aktif: animasi aliran */
+.step__line:not(.is-done) {
+  background:
+    linear-gradient(90deg, transparent 0 40%, var(--c-accent) 50%, transparent 60% 100%) no-repeat,
+    var(--c-connector);
+  background-size: 40% 100%, auto;
+  animation: line-flow 2.4s linear infinite;
+}
+
+@keyframes line-flow {
+  from {
+    background-position: -60% 0, 0 0;
+  }
+
+  to {
+    background-position: 160% 0, 0 0;
+  }
+}
+
+/* Garis setelah step pending tidak perlu animasi */
+.step.is-pending+.step__line {
+  animation: none;
+  background: var(--c-connector);
+}
+
+.milestone__empty {
+  flex: 1;
+  padding: 24px 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--c-muted);
+}
+
+/* ---------- Responsif ---------- */
+@media (max-width: 640px) {
+  .milestone {
+    padding: 16px;
+  }
+
+  .milestone__picker {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .milestone__picker .dd {
+    min-width: 0;
+  }
+
+  .flow {
+    padding: 4px 0 0;
+    gap: 4px;
+  }
+
+  .step {
+    width: 84px;
+  }
+
+  .step__icon {
+    width: 52px;
+    height: 52px;
+  }
+
+  .step__icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .step__name {
+    font-size: 14px;
+  }
+
+  .step .chip {
+    min-width: 0;
+    padding-inline: 8px;
+    font-size: 12px;
+  }
+
+  .step__line {
+    margin-top: 25px;
+  }
+}

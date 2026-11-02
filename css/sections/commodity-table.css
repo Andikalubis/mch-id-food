@@ -1,0 +1,209 @@
+/* =========================================================
+   SECTION: DAFTAR KOMODITAS DI KAPAL (tabel)
+   - Hover baris menyorot baris
+   - Nama komoditas = <label for="kom-ID">, klik → pilih komoditas
+     di section Milestone; baris terpilih (.is-selected) tersorot
+   ========================================================= */
+
+.commodity {
+  flex: 1 1 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 22px;
+}
+
+.commodity__summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: var(--c-text-2);
+}
+
+.commodity__summary b {
+  color: var(--c-title);
+}
+
+.commodity__summary .commodity__count {
+  font-weight: 600;
+  color: var(--c-text-2);
+}
+
+.commodity__sep {
+  width: 1px;
+  height: 18px;
+  background: var(--c-input-border);
+}
+
+.commodity__hint {
+  font-size: 12px;
+  color: var(--c-muted);
+}
+
+/* ---------- Tabel ---------- */
+.ct-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+}
+
+.ct {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.ct th {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--c-border);
+  background: var(--c-surface-2);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-muted);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.ct td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--c-divider);
+  color: var(--c-cell);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  transition: background-color var(--t-fast) var(--ease);
+}
+
+/* Angka & status tidak terpotong baris; nama/PBM boleh turun baris */
+.ct tbody td:nth-child(n+5) { white-space: nowrap; }
+.ct tbody td:nth-child(3) { font-size: 13px; }
+
+.ct .ct__left {
+  text-align: left;
+  padding-left: 12px;
+}
+
+/* Hover baris */
+.ct__row td:first-child {
+  box-shadow: inset 3px 0 0 transparent;
+  transition: box-shadow var(--t-fast), background-color var(--t-fast);
+}
+
+.ct__row:hover td {
+  background: var(--c-hover);
+}
+
+.ct__row:hover td:first-child {
+  box-shadow: inset 3px 0 0 var(--c-connector);
+}
+
+.ct__row:hover .chip {
+  transform: scale(1.04);
+  box-shadow: 0 2px 6px rgba(16, 42, 90, .08);
+}
+
+/* Nama komoditas sebagai link pemilih */
+.ct__name {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  color: var(--c-text);
+  cursor: pointer;
+  transition: color var(--t-fast);
+}
+
+.ct__name svg {
+  width: 14px;
+  height: 14px;
+  color: var(--c-accent);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity var(--t-fast), transform var(--t-med) var(--ease);
+}
+
+.ct__row:hover .ct__name {
+  color: var(--c-accent);
+}
+
+.ct__row:hover .ct__name svg {
+  opacity: 1;
+  transform: none;
+}
+
+/* Baris terpilih (sinkron dengan komoditas di Milestone, class dari JS) */
+.ct__row.is-selected td {
+  background: var(--c-accent-soft);
+}
+
+.ct__row.is-selected td:first-child {
+  box-shadow: inset 3px 0 0 var(--c-accent);
+}
+
+.ct__row.is-selected .ct__name {
+  color: var(--c-accent);
+}
+
+.ct__row.is-selected .ct__name svg {
+  opacity: 1;
+  transform: none;
+}
+
+/* Persentase + mini bar */
+.ct__pct {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ct__pct-bar {
+  position: relative;
+  width: 44px;
+  height: 6px;
+  overflow: hidden;
+  border-radius: var(--radius-pill);
+  background: var(--c-divider);
+}
+
+.ct__pct-bar::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: var(--w, 0%);
+  /* relatif terhadap komoditas terbesar, di-set oleh JS */
+  max-width: 100%;
+  border-radius: inherit;
+  background: var(--c-connector);
+  transition: background-color var(--t-fast), width 500ms var(--ease);
+}
+
+.ct__row:hover .ct__pct-bar::after {
+  background: var(--c-accent);
+}
+
+/* Baris kosong */
+.ct .ct__empty {
+  padding: 28px 12px;
+  color: var(--c-muted);
+  white-space: normal;
+}
+
+/* Footer total */
+.ct tfoot td {
+  padding: 16px 8px;
+  border-bottom: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--c-title);
+}
+
+.ct tfoot .ct__left {
+  padding-left: 12px;
+}
+
+@media (max-width: 640px) {
+  .commodity {
+    padding: 16px;
+  }
+}

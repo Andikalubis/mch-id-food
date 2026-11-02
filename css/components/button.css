@@ -1,0 +1,71 @@
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font: 600 14px var(--font);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color var(--t-fast) var(--ease),
+    border-color var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease),
+    opacity var(--t-fast) var(--ease);
+}
+
+.btn:active {
+  transform: translateY(1px) scale(.98);
+}
+
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--c-accent-ring);
+}
+
+.btn__icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  transition: transform var(--t-med) var(--ease);
+}
+
+/* Primary */
+.btn--primary {
+  background: var(--c-accent);
+  color: #FFFFFF;
+}
+
+.btn--primary:hover {
+  background: var(--c-accent-hover);
+  color: #FFFFFF;
+  box-shadow: 0 6px 16px rgba(21, 101, 232, .28);
+}
+
+/* Outline */
+.btn--outline {
+  background: var(--c-surface);
+  border-color: #B9CDEF;
+  color: var(--c-accent);
+}
+
+.btn--outline:hover {
+  background: var(--c-accent-soft);
+  border-color: var(--c-accent);
+  color: var(--c-accent-hover);
+}
+
+.btn--reset:hover .btn__icon,
+.btn--outline:hover .btn__icon {
+  transform: rotate(-200deg);
+}

@@ -1,0 +1,310 @@
+/* =========================================================
+   DROPDOWN (CSS only) + SEGMENTED CONTROL
+
+   Struktur dropdown:
+   .dd[role=radiogroup]
+     .dd__trigger > .dd__value > span*N   (teks tiap opsi, urutan sama)
+     ul.dd__menu > li > label.dd__opt > input[type=radio] + span
+
+   - Terbuka saat hover, atau saat fokus keyboard (Tab lalu panah ↑↓).
+   - Nilai yang tampil di trigger dipilih lewat :has() + nth-child.
+   - Opsi diisi & disinkronkan oleh js/render.js (CM.renderDropdown).
+   ========================================================= */
+
+.dd {
+  position: relative;
+  width: 100%;
+}
+
+/* ---------- Trigger ---------- */
+.dd__trigger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 40px;
+  padding: 8px 10px 8px 12px;
+  border: 1px solid var(--c-input-border);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface);
+  color: var(--c-text);
+  font: 600 14px var(--font);
+  cursor: pointer;
+  user-select: none;
+  transition: border-color var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), background-color var(--t-fast) var(--ease);
+}
+
+.dd__value {
+  flex: 1;
+  min-width: 0;
+}
+
+.dd__value>span {
+  display: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.dd__caret {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  color: var(--c-muted);
+  transition: transform var(--t-med) var(--ease), color var(--t-fast);
+}
+
+/* Teks trigger = opsi yang sedang dicentang (mendukung hingga 8 opsi) */
+.dd:has(.dd__menu > li:nth-child(1) input:checked) .dd__value> :nth-child(1),
+.dd:has(.dd__menu > li:nth-child(2) input:checked) .dd__value> :nth-child(2),
+.dd:has(.dd__menu > li:nth-child(3) input:checked) .dd__value> :nth-child(3),
+.dd:has(.dd__menu > li:nth-child(4) input:checked) .dd__value> :nth-child(4),
+.dd:has(.dd__menu > li:nth-child(5) input:checked) .dd__value> :nth-child(5),
+.dd:has(.dd__menu > li:nth-child(6) input:checked) .dd__value> :nth-child(6),
+.dd:has(.dd__menu > li:nth-child(7) input:checked) .dd__value> :nth-child(7),
+.dd:has(.dd__menu > li:nth-child(8) input:checked) .dd__value> :nth-child(8) {
+  display: block;
+}
+
+/* ---------- Menu ---------- */
+.dd__menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 50;
+  min-width: 100%;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 6px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-surface);
+  box-shadow: var(--shadow-pop);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px) scale(.98);
+  transform-origin: top left;
+  transition: opacity var(--t-fast) var(--ease), transform var(--t-med) var(--ease), visibility 0s linear var(--t-med);
+}
+
+/* Jembatan tak terlihat agar hover tidak putus di celah trigger → menu */
+.dd::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 100%;
+  height: 8px;
+}
+
+/* Judul grup opsi: <ul class="dd__menu" data-group="..."> */
+.dd__menu[data-group]::before {
+  content: attr(data-group);
+  display: block;
+  padding: 6px 10px 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .6px;
+  text-transform: uppercase;
+  color: var(--c-icon-muted);
+}
+
+.dd--right .dd__menu {
+  left: auto;
+  right: 0;
+  transform-origin: top right;
+}
+
+/* ---------- Opsi ---------- */
+.dd__opt {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--c-text-2);
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease), color var(--t-fast) var(--ease), padding var(--t-fast) var(--ease);
+}
+
+.dd__opt:hover {
+  background: var(--c-hover);
+  color: var(--c-accent);
+  padding-left: 14px;
+}
+
+.dd__meta {
+  margin-left: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-muted);
+}
+
+.dd__check {
+  width: 16px;
+  height: 16px;
+  flex: none;
+  color: var(--c-accent);
+  opacity: 0;
+  transform: scale(.6);
+  transition: opacity var(--t-fast), transform var(--t-fast) var(--ease);
+}
+
+.dd__opt:has(input:checked) {
+  background: var(--c-accent-soft);
+  color: var(--c-accent);
+  font-weight: 600;
+}
+
+.dd__opt:has(input:checked) .dd__check {
+  opacity: 1;
+  transform: none;
+}
+
+.dd__opt:has(input:focus-visible) {
+  outline: 2px solid var(--c-accent);
+  outline-offset: -2px;
+}
+
+/* ---------- State: hover & terbuka ---------- */
+.dd:hover .dd__trigger {
+  border-color: var(--c-input-border-hover);
+  background: #FBFDFF;
+}
+
+.dd:hover .dd__caret {
+  color: var(--c-accent);
+}
+
+.dd:hover .dd__menu,
+.dd:has(input:focus-visible) .dd__menu {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition: opacity var(--t-fast) var(--ease), transform var(--t-med) var(--ease), visibility 0s;
+}
+
+.dd:hover .dd__trigger,
+.dd:has(input:focus-visible) .dd__trigger {
+  border-color: var(--c-accent);
+  box-shadow: 0 0 0 3px var(--c-accent-ring);
+}
+
+.dd:hover .dd__caret,
+.dd:has(input:focus-visible) .dd__caret {
+  transform: rotate(180deg);
+}
+
+/* ---------- Ditutup setelah klik opsi (class dari JS, hilang saat kursor keluar) ---------- */
+.dd.is-closed:not(:has(input:focus-visible)) .dd__menu {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px) scale(.98);
+}
+
+.dd.is-closed:not(:has(input:focus-visible)) .dd__caret {
+  transform: none;
+}
+
+/* ---------- Tidak ada opsi ---------- */
+.dd__value>.dd__placeholder {
+  display: block;
+  color: var(--c-icon-muted);
+  font-weight: 500;
+}
+
+.dd.is-empty .dd__trigger {
+  cursor: not-allowed;
+  background: var(--c-surface-2);
+}
+
+.dd.is-empty .dd__menu {
+  display: none;
+}
+
+.dd.is-empty:hover .dd__trigger {
+  border-color: var(--c-input-border);
+  box-shadow: none;
+}
+
+.dd.is-empty:hover .dd__caret {
+  transform: none;
+  color: var(--c-muted);
+}
+
+/* ---------- Varian compact ---------- */
+.dd--compact .dd__trigger {
+  min-height: 36px;
+  padding-block: 6px;
+  font-weight: 500;
+}
+
+
+/* =========================================================
+   SEGMENTED CONTROL (radio dua/tiga pilihan)
+   ========================================================= */
+.seg {
+  position: relative;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  min-height: 40px;
+  padding: 3px;
+  border: 1px solid var(--c-input-border);
+  border-radius: var(--radius-sm);
+  background: var(--c-surface-2);
+  isolation: isolate;
+}
+
+/* "Thumb" yang bergeser */
+.seg::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc(50% - 3px);
+  border-radius: 6px;
+  background: var(--c-surface);
+  box-shadow: 0 1px 2px rgba(16, 42, 90, .12), 0 0 0 1px var(--c-border);
+  transition: transform var(--t-med) var(--ease);
+}
+
+.seg:has(.seg__opt:nth-child(2) input:checked)::before {
+  transform: translateX(100%);
+}
+
+.seg__opt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-muted);
+  cursor: pointer;
+  transition: color var(--t-fast) var(--ease);
+}
+
+.seg__opt:hover {
+  color: var(--c-text);
+}
+
+.seg__opt:has(input:checked) {
+  color: var(--c-accent);
+}
+
+.seg__opt:has(input:focus-visible) {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 1px;
+}
+
+.seg:hover {
+  border-color: var(--c-input-border-hover);
+}

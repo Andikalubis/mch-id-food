@@ -1,0 +1,197 @@
+/* =========================================================
+   SECTION: PROGRES OPERASI KAPAL
+   ========================================================= */
+
+.progress {
+  flex: 1 1 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 20px 22px;
+}
+
+/* ---------- Statistik ---------- */
+.progress__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.stat {
+  padding: 6px 0 6px 10px;
+  border-left: 1px solid var(--c-divider);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  transition: background-color var(--t-fast), border-color var(--t-fast);
+}
+
+.stat:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.stat__val {
+  margin-top: 2px;
+  font-size: 17px;
+  line-height: 1.3;
+  font-weight: 700;
+  color: var(--c-text);
+}
+
+/* Hover stat menyorot segmen bar yang sesuai */
+.stat--done:hover {
+  border-left-color: var(--c-success);
+}
+
+.stat--rest:hover {
+  border-left-color: var(--c-warning);
+}
+
+.progress:has(.stat--done:hover) .pbar__seg--rest,
+.progress:has(.legend--done:hover) .pbar__seg--rest {
+  opacity: .35;
+}
+
+.progress:has(.stat--rest:hover) .pbar__seg--done,
+.progress:has(.legend--rest:hover) .pbar__seg--done {
+  opacity: .35;
+}
+
+/* ---------- Progress bar ---------- */
+.pbar {
+  display: flex;
+  height: 22px;
+}
+
+.pbar__seg {
+  height: 100%;
+  cursor: default;
+  transition: opacity var(--t-med) var(--ease), filter var(--t-fast), box-shadow var(--t-fast), width 700ms var(--ease);
+}
+
+.pbar__seg--done {
+  width: var(--w);
+  border-radius: var(--radius-pill) 0 0 var(--radius-pill);
+  background:
+    repeating-linear-gradient(-45deg, rgba(255, 255, 255, .14) 0 8px, transparent 8px 16px),
+    var(--c-success);
+  background-size: 22px 22px, auto;
+  animation: pbar-grow 900ms var(--ease) backwards, pbar-stripes 1.2s linear infinite;
+}
+
+.pbar__seg--rest {
+  flex: 1;
+  border-radius: 0 var(--radius-pill) var(--radius-pill) 0;
+  background: var(--c-warning);
+}
+
+.pbar__seg:hover {
+  filter: brightness(1.06) saturate(1.15);
+  box-shadow: 0 0 0 3px rgba(16, 42, 90, .1);
+}
+
+/* Selesai 100%: bar penuh, tanpa garis bergerak */
+.pbar.is-complete .pbar__seg--done {
+  border-radius: var(--radius-pill);
+  animation: none;
+  background: var(--c-success);
+}
+
+.pbar.is-complete .pbar__seg--rest {
+  display: none;
+}
+
+@keyframes pbar-grow {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes pbar-stripes {
+  to {
+    background-position: 22px 0, 0 0;
+  }
+}
+
+/* ---------- Legend ---------- */
+.pbar__legend {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-cell);
+}
+
+.legend {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: default;
+}
+
+.legend__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: transform var(--t-fast) var(--ease);
+}
+
+.legend--done .legend__dot {
+  background: var(--c-success);
+}
+
+.legend--rest .legend__dot {
+  background: var(--c-warning);
+}
+
+.legend:hover .legend__dot {
+  transform: scale(1.35);
+}
+
+/* ---------- Tanggal ---------- */
+.progress__dates {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid var(--c-divider);
+}
+
+.date-item {
+  display: flex;
+  gap: 10px;
+  margin: -6px;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  transition: background-color var(--t-fast);
+}
+
+.date-item:hover {
+  background: var(--c-hover);
+}
+
+.date-item__icon {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  color: var(--c-accent);
+}
+
+.date-item__label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--c-text-2);
+}
+
+.date-item__val {
+  margin-top: 4px;
+  font-size: 15px;
+  line-height: 1.4;
+  color: var(--c-cell);
+}
+
+@media (max-width: 640px) {
+  .progress {
+    padding: 16px;
+  }
+}

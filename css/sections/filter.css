@@ -1,0 +1,203 @@
+/* =========================================================
+   SECTION: FILTER
+   - Satu baris di desktop; turun baris otomatis di layar sempit
+   - .field.is-changed   → nilai berbeda dari default
+   - .field.is-pending   → pilihan belum diterapkan ke dashboard
+   - .filter.has-changes → Reset aktif
+   - .filter.has-pending → tombol Terapkan aktif + badge
+   ========================================================= */
+
+.filter {
+  position: relative;
+  z-index: 10;              /* menu dropdown tampil di atas card lain */
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 14px 18px;
+}
+
+/* ---------- Field ---------- */
+/* Lebar proporsional; --min = lebar minimum kontrol sebelum baris turun */
+.field {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex: 1 1 0;
+  min-width: auto;          /* jangan menyusut di bawah --min (cegah tumpang tindih) */
+}
+
+.field--wide {
+  flex-grow: 1.45;
+}
+
+.field[data-field="pel"] { --min: 110px; }
+.field[data-field="ter"] { --min: 165px; }
+.field[data-field="kap"] { --min: 175px; }
+.field[data-field="ff"]  { --min: 135px; }
+.field[data-field="lay"] { --min: 150px; flex-grow: .9; }
+
+.field__icon {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  margin-bottom: 7px;
+  color: var(--c-accent);
+  transition: transform var(--t-med) var(--ease), color var(--t-fast);
+}
+
+.field__body {
+  position: relative;
+  flex: 1;
+  min-width: var(--min, 120px);
+}
+
+.field__label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: var(--c-muted);
+  white-space: nowrap;
+  transition: color var(--t-fast);
+}
+
+/* Hover/fokus field */
+.field:hover .field__icon,
+.field:has(:focus-visible) .field__icon {
+  transform: translateY(-2px) scale(1.08);
+  color: var(--c-accent-hover);
+}
+
+.field:hover .field__label,
+.field:has(:focus-visible) .field__label {
+  color: var(--c-accent);
+}
+
+/* ---------- Field yang berbeda dari default ---------- */
+.field.is-changed .field__label {
+  color: var(--c-accent);
+  font-weight: 600;
+}
+
+.field.is-changed .dd__trigger,
+.field.is-changed .seg {
+  border-color: var(--c-accent);
+  background-color: #F7FAFF;
+}
+
+/* ---------- Field yang belum diterapkan ---------- */
+.field.is-pending .field__label {
+  color: #C2410C;
+  font-weight: 600;
+}
+
+/* Titik oranye di label (ringkas, tidak menambah lebar) */
+.field.is-pending .field__label::after {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #F97316;
+}
+
+.field.is-pending .dd__trigger,
+.field.is-pending .seg {
+  border-color: #F59E0B;
+  background-color: #FFFBF5;
+}
+
+/* ---------- Aksi ---------- */
+.filter__actions {
+  display: flex;
+  gap: 10px;
+  flex: none;
+  margin-left: auto;
+}
+
+/* Tombol setinggi input agar sejajar dalam satu baris */
+.filter__actions .btn {
+  min-height: 40px;
+  padding: 0 16px;
+}
+
+/* Tombol Terapkan */
+.btn--apply {
+  position: relative;
+}
+
+.btn--apply:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.btn--apply:disabled:hover {
+  background: var(--c-accent);
+}
+
+.filter.has-pending .btn--apply::after {
+  content: "";
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--c-surface);
+  border-radius: 50%;
+  background: #F97316;
+  animation: apply-pulse 1.6s var(--ease) infinite;
+}
+
+@keyframes apply-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(249, 115, 22, .5);
+  }
+
+  100% {
+    box-shadow: 0 0 0 8px rgba(249, 115, 22, 0);
+  }
+}
+
+/* Reset redup bila belum ada perubahan */
+.filter:not(.has-changes) .btn--reset {
+  opacity: .55;
+}
+
+.filter:not(.has-changes) .btn--reset:hover {
+  opacity: 1;
+}
+
+/* Layar menengah: sembunyikan ikon field agar tetap satu baris */
+@media (max-width: 1400px) {
+  .field__icon {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .filter {
+    padding: 14px;
+  }
+
+  .field,
+  .field--wide,
+  .field[data-field="lay"] {
+    flex: 1 1 100%;
+  }
+
+  .field__body {
+    min-width: 0;
+  }
+
+  .filter__actions {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .filter__actions .btn {
+    flex: 1;
+  }
+}

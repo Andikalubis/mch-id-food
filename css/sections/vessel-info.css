@@ -1,0 +1,224 @@
+/* =========================================================
+   SECTION: INFORMASI KAPAL
+   ========================================================= */
+
+.vessel {
+  flex: 999 1 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px 22px;
+}
+
+.vessel .card__icon {
+  width: 26px;
+  height: 26px;
+}
+
+.vessel .card__title {
+  font-size: 19px;
+}
+
+/* ---------- Status pill ---------- */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--c-success-soft);
+  color: var(--c-success-strong);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: default;
+  transition: box-shadow var(--t-med) var(--ease);
+}
+
+.status-pill:hover {
+  box-shadow: 0 0 0 4px rgba(22, 163, 74, .12);
+}
+
+.status-pill__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c-success-dot);
+  animation: pill-pulse 1.8s var(--ease) infinite;
+}
+
+@keyframes pill-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, .55);
+  }
+
+  100% {
+    box-shadow: 0 0 0 7px rgba(22, 163, 74, 0);
+  }
+}
+
+/* Varian status kapal */
+.status-pill--anchorage {
+  background: #FFF4E5;
+  color: #B45309;
+}
+
+.status-pill--anchorage .status-pill__dot {
+  background: #F59E0B;
+  animation-name: pill-pulse-warn;
+}
+
+.status-pill--departed {
+  background: #EEF1F5;
+  color: #4B5565;
+}
+
+.status-pill--departed .status-pill__dot {
+  background: #8E99A8;
+  animation: none;
+}
+
+@keyframes pill-pulse-warn {
+  0% {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, .55);
+  }
+
+  100% {
+    box-shadow: 0 0 0 7px rgba(245, 158, 11, 0);
+  }
+}
+
+/* ---------- Grid info ---------- */
+.vessel__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(max(200px, 30%), 1fr));  /* maks. 3 kolom */
+  gap: 6px 8px;
+  margin: 0 -10px;
+}
+
+.info {
+  display: flex;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: var(--radius-md);
+  transition: background-color var(--t-fast) var(--ease);
+}
+
+.info__icon {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  color: var(--c-accent);
+  transition: transform var(--t-med) var(--ease);
+}
+
+.info:hover {
+  background: var(--c-hover);
+}
+
+.info:hover .info__icon {
+  transform: scale(1.12);
+}
+
+.info:hover .lbl {
+  color: var(--c-accent);
+}
+
+.info__route {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.info__route-arrow {
+  width: 18px;
+  height: 18px;
+  margin-bottom: 2px;
+  color: var(--c-success-dot);
+  transition: transform var(--t-med) var(--ease);
+}
+
+.info:hover .info__route-arrow {
+  transform: translateX(4px);
+}
+
+/* ---------- Timeline Arrival / Berthing / Departure ---------- */
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  padding-top: 16px;
+  border-top: 1px solid var(--c-divider);
+}
+
+.timeline__item {
+  position: relative;
+  display: flex;
+  gap: 12px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  transition: background-color var(--t-fast) var(--ease);
+}
+
+.timeline__item+.timeline__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 1px;
+  background: var(--c-divider);
+}
+
+.timeline__item:hover {
+  background: var(--c-hover);
+}
+
+.timeline__item:hover::before {
+  opacity: 0;
+}
+
+.timeline__icon {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  color: var(--c-accent);
+  transition: transform var(--t-med) var(--ease);
+}
+
+.timeline__item:hover .timeline__icon {
+  transform: translateY(-2px);
+}
+
+.timeline__item.is-pending .timeline__icon {
+  color: var(--c-icon-muted);
+}
+
+.timeline__text {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.timeline__name {
+  font-weight: 700;
+  color: var(--c-text);
+}
+
+.timeline__k {
+  display: inline-block;
+  width: 34px;
+  color: var(--c-muted);
+}
+
+.timeline__actual {
+  color: var(--c-success-strong);
+}
+
+@media (max-width: 640px) {
+  .vessel {
+    padding: 16px;
+  }
+
+  .timeline__item+.timeline__item::before {
+    display: none;
+  }
+}

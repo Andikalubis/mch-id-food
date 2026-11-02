@@ -1,0 +1,103 @@
+/* =========================================================
+   SECTION: HEADER
+   ========================================================= */
+
+.app-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.app-header__title {
+  font-size: 32px;
+  font-weight: 800;
+  color: var(--c-title);
+  letter-spacing: -.5px;
+}
+
+.app-header__subtitle {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--c-text-2);
+}
+
+/* Jam & tanggal */
+.app-header__clock {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 6px 12px 6px 8px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  line-height: 1.5;
+  transition: background-color var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+}
+
+.app-header__clock:hover {
+  background: var(--c-surface);
+  border-color: var(--c-border);
+}
+
+.app-header__clock-icon {
+  width: 28px;
+  height: 28px;
+  flex: none;
+  color: var(--c-muted);
+  transition: color var(--t-fast);
+}
+
+.app-header__clock:hover .app-header__clock-icon {
+  color: var(--c-accent);
+}
+
+.app-header__date {
+  color: var(--c-accent);
+  font-weight: 600;
+}
+
+.app-header__time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--c-muted);
+}
+
+/* Indikator "live" */
+.live-dot {
+  position: relative;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--c-success-dot);
+}
+
+.live-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--c-success-dot);
+  animation: live-ping 1.8s var(--ease) infinite;
+}
+
+@keyframes live-ping {
+  0% {
+    transform: scale(1);
+    opacity: .6;
+  }
+
+  80%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .app-header__title {
+    font-size: 26px;
+  }
+}

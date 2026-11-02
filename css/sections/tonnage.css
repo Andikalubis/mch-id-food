@@ -1,0 +1,186 @@
+/* =========================================================
+   SECTION: KOMPOSISI TONASE (donut)
+   Hover segmen donut ATAU legend → segmen menebal,
+   segmen lain meredup, teks tengah berganti.
+   ========================================================= */
+
+.tonnage {
+  flex: 1 1 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 20px 22px;
+}
+
+/* ---------- Donut ---------- */
+.donut {
+  position: relative;
+  width: 190px;
+  height: 190px;
+  margin: 4px auto 0;
+}
+
+.donut__svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+  overflow: visible;
+}
+
+.donut__seg {
+  fill: none;
+  stroke-width: 30;
+  cursor: pointer;
+  transition: stroke-width var(--t-med) var(--ease), opacity var(--t-med) var(--ease),
+    stroke-dasharray 700ms var(--ease), stroke-dashoffset 700ms var(--ease);
+}
+
+.donut__seg--owner {
+  stroke: var(--c-accent);
+}
+
+.donut__seg--other {
+  stroke: var(--c-donut-rest);
+}
+
+/* Teks tengah */
+.donut__center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.donut__label {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  opacity: 0;
+  transform: scale(.92);
+  transition: opacity var(--t-fast) var(--ease), transform var(--t-med) var(--ease);
+}
+
+.donut__label strong {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--c-title);
+}
+
+.donut__label span {
+  font-size: 12px;
+  color: var(--c-muted);
+}
+
+.donut__label--total {
+  opacity: 1;
+  transform: none;
+}
+
+.donut__label--owner strong {
+  color: var(--c-accent);
+}
+
+/* State hover: Cargo Owner */
+.tonnage:has(.donut__seg--owner:hover, .tl--owner:hover) .donut__seg--owner {
+  stroke-width: 38;
+}
+
+.tonnage:has(.donut__seg--owner:hover, .tl--owner:hover) .donut__seg--other {
+  opacity: .45;
+}
+
+.tonnage:has(.donut__seg--owner:hover, .tl--owner:hover) .donut__label--total {
+  opacity: 0;
+  transform: scale(.92);
+}
+
+.tonnage:has(.donut__seg--owner:hover, .tl--owner:hover) .donut__label--owner {
+  opacity: 1;
+  transform: none;
+}
+
+/* State hover: Lainnya */
+.tonnage:has(.donut__seg--other:hover, .tl--other:hover) .donut__seg--other {
+  stroke-width: 38;
+  stroke: #BBD3F5;
+}
+
+.tonnage:has(.donut__seg--other:hover, .tl--other:hover) .donut__seg--owner {
+  opacity: .35;
+}
+
+.tonnage:has(.donut__seg--other:hover, .tl--other:hover) .donut__label--total {
+  opacity: 0;
+  transform: scale(.92);
+}
+
+.tonnage:has(.donut__seg--other:hover, .tl--other:hover) .donut__label--other {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Legend ---------- */
+.tonnage__legend {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: auto;
+}
+
+.tl {
+  margin: -6px;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--t-fast);
+}
+
+.tl:hover {
+  background: var(--c-hover);
+}
+
+.tl__name {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  font-size: 12px;
+  color: var(--c-muted);
+}
+
+.tl__dot {
+  width: 10px;
+  height: 10px;
+  flex: none;
+  align-self: flex-start;
+  margin-top: 3px;
+  border-radius: 50%;
+  transition: transform var(--t-fast) var(--ease);
+}
+
+.tl--owner .tl__dot {
+  background: var(--c-accent);
+}
+
+.tl--other .tl__dot {
+  background: var(--c-donut-rest);
+}
+
+.tl:hover .tl__dot {
+  transform: scale(1.35);
+}
+
+.tl__val {
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--c-title);
+}
+
+@media (max-width: 640px) {
+  .tonnage {
+    padding: 16px;
+  }
+}

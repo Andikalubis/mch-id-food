@@ -1,0 +1,351 @@
+/* =========================================================
+   BASE — design tokens, reset, layout, card, chip, utilitas
+   ========================================================= */
+
+:root {
+  /* Surface */
+  --c-bg: #EEF4FC;
+  --c-surface: #FFFFFF;
+  --c-surface-2: #F5F8FD;
+  --c-hover: #F3F7FE;
+  --c-border: #E1E9F5;
+  --c-divider: #EDF2F9;
+  --c-input-border: #D5DFEE;
+  --c-input-border-hover: #A9C2EC;
+
+  /* Brand */
+  --c-accent: #1565E8;
+  --c-accent-hover: #0B4FC0;
+  --c-accent-soft: #E7F0FF;
+  --c-accent-ring: rgba(21, 101, 232, .22);
+
+  /* Text */
+  --c-title: #0B2A6F;
+  --c-text: #0F2350;
+  --c-text-2: #1F2D45;
+  --c-cell: #1D3A78;
+  --c-muted: #5F6F86;
+  --c-icon-muted: #7C8AA0;
+
+  /* Status */
+  --c-success: #19A752;
+  --c-success-dot: #16A34A;
+  --c-success-strong: #15803D;
+  --c-success-soft: #E2F6E8;
+  --c-warning: #F8BE62;
+  --c-step-idle: #8E99A8;
+  --c-connector: #9DB8E6;
+  --c-donut-rest: #D6E6FB;
+
+  /* Shape & depth */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+  --shadow-card: 0 1px 2px rgba(16, 42, 90, .04), 0 4px 16px rgba(16, 42, 90, .04);
+  --shadow-card-hover: 0 2px 4px rgba(16, 42, 90, .05), 0 10px 28px rgba(16, 42, 90, .08);
+  --shadow-pop: 0 4px 10px rgba(16, 42, 90, .08), 0 16px 40px rgba(16, 42, 90, .14);
+
+  /* Motion */
+  --ease: cubic-bezier(.2, .7, .3, 1);
+  --t-fast: 140ms;
+  --t-med: 220ms;
+
+  --font: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--c-text);
+  background: var(--c-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+dl,
+dd,
+ol,
+ul {
+  margin: 0;
+}
+
+ol,
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+svg {
+  display: block;
+}
+
+a {
+  color: var(--c-accent);
+}
+
+a:hover {
+  color: var(--c-accent-hover);
+}
+
+button {
+  font: inherit;
+}
+
+.sprite {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+/* Konten disembunyikan sampai data pertama selesai dimuat */
+body.is-loading .dashboard {
+  visibility: hidden;
+}
+
+.noscript {
+  padding: 24px;
+  text-align: center;
+  color: var(--c-muted);
+}
+
+/* Kilatan saat nilai berubah secara realtime (class dari js/render.js) */
+.is-flash {
+  animation: value-flash 900ms var(--ease);
+  border-radius: 4px;
+}
+
+@keyframes value-flash {
+  0% {
+    background-color: rgba(21, 101, 232, .16);
+    color: var(--c-accent);
+  }
+
+  100% {
+    background-color: transparent;
+  }
+}
+
+/* Input yang disembunyikan secara visual tapi tetap bisa difokus keyboard */
+.dd input,
+.seg input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  pointer-events: none;
+}
+
+/* ---------- Layout ---------- */
+.page {
+  min-height: 100vh;
+  padding: 24px 0 32px;      /* jarak samping diatur oleh lebar .container */
+}
+
+.container {
+  width: 90%;                /* 90% lebar layar browser */
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ---------- Card ---------- */
+.card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  min-width: 0;
+  transition: box-shadow var(--t-med) var(--ease), border-color var(--t-med) var(--ease);
+}
+
+.card:hover {
+  box-shadow: var(--shadow-card-hover);
+  border-color: #D3DFF1;
+}
+
+.card__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px 12px;
+}
+
+.card__title-wrap {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.card__icon {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  color: var(--c-accent);
+}
+
+.card__icon--sm {
+  width: 22px;
+  height: 22px;
+}
+
+.card__title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--c-title);
+}
+
+.card__title-sub {
+  font-weight: 500;
+}
+
+/* ---------- Teks label / nilai ---------- */
+.lbl {
+  font-size: 12px;
+  color: var(--c-muted);
+}
+
+.val {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--c-text);
+  margin-top: 2px;
+}
+
+.val--strong {
+  color: var(--c-title);
+  font-weight: 700;
+}
+
+.val--mono {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: .2px;
+}
+
+/* ---------- Chip status ---------- */
+.chip {
+  display: inline-block;
+  min-width: 96px;
+  text-align: center;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease);
+}
+
+.chip--xs {
+  min-width: 0;
+  padding: 2px 8px;
+  font-size: 11px;
+}
+
+.st-bongkar {
+  background: #FFF0E5;
+  color: #C2410C;
+}
+
+.st-keluar {
+  background: #F2ECFF;
+  color: #6D28D9;
+}
+
+.st-tumpuk {
+  background: #E7F0FF;
+  color: #1D5BC6;
+}
+
+.st-selesai {
+  background: #E2F6E8;
+  color: #15803D;
+}
+
+.st-proses {
+  background: #E6EFFF;
+  color: #1D5BC6;
+}
+
+.st-menunggu {
+  background: #FFEFE3;
+  color: #C2410C;
+}
+
+.st-berjalan {
+  background: #E2F6E8;
+  color: #15803D;
+}
+
+.st-berjalan-g {
+  background: #EEF1F5;
+  color: #4B5565;
+}
+
+/* ---------- Responsif umum ---------- */
+@media (max-width: 640px) {
+  .page {
+    padding: 16px 0 24px;
+  }
+
+  /* Di ponsel 90% terlalu sempit: sisakan gutter 16px */
+  .container {
+    width: calc(100% - 32px);
+  }
+}
+
+/* ---------- Kurangi animasi bila diminta OS ---------- */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+/* Dashboard berkedip lembut saat filter diterapkan (class dari js/filter.js) */
+.dashboard.is-applied {
+  animation: dashboard-applied 420ms var(--ease);
+}
+
+@keyframes dashboard-applied {
+  from {
+    opacity: .35;
+    transform: translateY(4px);
+  }
+}

@@ -1,0 +1,134 @@
+/* =========================================================
+   SECTION: DOKUMEN BONGKAR (di dalam card Milestone)
+   ========================================================= */
+
+.docs {
+  padding: 14px 18px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--t-med) var(--ease);
+}
+
+.docs:hover {
+  border-color: #CFDCF0;
+}
+
+.docs__head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.docs__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--c-title);
+}
+
+.docs__count {
+  margin-left: auto;
+  padding: 2px 10px;
+  border-radius: var(--radius-pill);
+  background: var(--c-surface-2);
+  font-size: 12px;
+  color: var(--c-muted);
+}
+
+.docs__count b {
+  color: var(--c-success-strong);
+}
+
+.docs__cols {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 32px;
+}
+
+.docs__list {
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.docs__list--split {
+  padding-left: 24px;
+  border-left: 1px solid var(--c-divider);
+}
+
+/* ---------- Item dokumen ---------- */
+.doc {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 34px;
+  margin: 0 -8px;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  color: var(--c-text-2);
+  cursor: default;
+  transition: background-color var(--t-fast) var(--ease);
+}
+
+.doc__icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--c-icon-muted);
+  transition: color var(--t-fast), transform var(--t-med) var(--ease);
+}
+
+.doc__name {
+  flex: 1;
+  transition: transform var(--t-med) var(--ease);
+}
+
+.doc:hover {
+  background: var(--c-hover);
+}
+
+.doc:hover .doc__icon {
+  color: var(--c-accent);
+  transform: rotate(-8deg);
+}
+
+.doc:hover .doc__name {
+  transform: translateX(2px);
+  color: var(--c-text);
+}
+
+.doc:hover .chip {
+  transform: scale(1.04);
+}
+
+/* Dokumen yang masih proses diberi titik berdenyut */
+.doc:has(.st-proses) .doc__name::after {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  margin-left: 8px;
+  vertical-align: middle;
+  border-radius: 50%;
+  background: var(--c-accent);
+  animation: doc-blink 1.4s ease-in-out infinite;
+}
+
+@keyframes doc-blink {
+  50% {
+    opacity: .2;
+  }
+}
+
+@media (max-width: 560px) {
+  .docs {
+    padding: 12px 14px;
+  }
+
+  .docs__list--split {
+    padding-left: 0;
+    border-left: 0;
+  }
+}
