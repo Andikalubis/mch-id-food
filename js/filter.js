@@ -44,7 +44,24 @@
     var q = new URLSearchParams();
     KEYS.forEach(function (k) { q.set(k, applied[k]); });
     if (applied.kom) q.set('kom', applied.kom);
+    if (currentMode() === '2') q.set('mode', '2');
     history.replaceState(null, '', '?' + q.toString());
+  }
+
+  /* ---------- Mode dashboard (1 = lengkap, 2 = tanpa tonase & cargo owner) ----------
+     Tampilan diatur CSS (body:has(#mode-2:checked)); JS hanya menyimpan pilihan di URL. */
+  function currentMode() {
+    var m = document.querySelector('input[name="mode"]:checked');
+    return m ? m.value : '1';
+  }
+  function initMode() {
+    var mode = new URLSearchParams(location.search).get('mode') === '2' ? '2' : '1';
+    $('#mode-' + mode).checked = true;
+    $('#mode-switch').addEventListener('change', function () {
+      var dash = $('#dashboard');
+      dash.classList.remove('is-applied'); void dash.offsetWidth; dash.classList.add('is-applied');
+      writeUrl();
+    });
   }
 
   /* ---------- Turunan data (cascade) ---------- */
@@ -249,6 +266,7 @@
     $('#empty-reset').addEventListener('click', reset);
     $('#empty-suggest').addEventListener('click', function () { draft.lay = this.dataset.lay; apply(); });
     bindDropdownClose();
+    initMode();
 
     tickClock();
     setInterval(tickClock, 1000);

@@ -10,6 +10,14 @@
   gap: 12px;
 }
 
+/* Judul + switch mode berdampingan */
+.app-header__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+}
+
 .app-header__title {
   font-size: 32px;
   font-weight: 800;
@@ -21,6 +29,46 @@
   margin-top: 4px;
   font-size: 14px;
   color: var(--c-text-2);
+}
+
+/* ---------- Switch Mode 1 / Mode 2 ----------
+   Memakai komponen .seg (dropdown.css), versi pill ringkas.
+   Efeknya ke dashboard diatur lewat body:has(#mode-2:checked)
+   di tonnage.css & commodity-table.css. */
+.seg--mode {
+  min-height: 34px;
+  border-radius: 999px;
+  background: var(--c-surface);
+}
+
+.seg--mode::before {
+  border-radius: 999px;
+  background: var(--c-accent);
+  box-shadow: 0 2px 6px rgba(21, 101, 232, .35);
+}
+
+.seg--mode .seg__opt {
+  padding: 0 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.seg--mode .seg__opt:has(input:checked) {
+  color: #FFFFFF;
+}
+
+/* Tooltip ditampilkan di bawah (di atas header tidak ada ruang) */
+.seg--mode [data-tip]::after {
+  top: calc(100% + 10px);
+  bottom: auto;
+}
+
+.seg--mode [data-tip]::before {
+  top: calc(100% + 4px);
+  bottom: auto;
+  border-top: 0;
+  border-bottom: 6px solid var(--c-text);
 }
 
 /* Jam & tanggal */

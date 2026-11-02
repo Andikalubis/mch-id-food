@@ -37,6 +37,7 @@
 .dd__value {
   flex: 1;
   min-width: 0;
+  contain: inline-size;   /* teks panjang tidak memperlebar field → terpotong "…" */
 }
 
 .dd__value>span {

@@ -184,3 +184,8 @@
     padding: 16px;
   }
 }
+
+/* Mode 2: card Komposisi Tonase disembunyikan */
+body:has(#mode-2:checked) .tonnage {
+  display: none;
+}

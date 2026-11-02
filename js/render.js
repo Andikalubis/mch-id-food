@@ -189,14 +189,14 @@ window.CM = window.CM || {};
         '<td>' + (i + 1) + '</td>' +
         '<td class="ct__left"><label class="ct__name" for="kom-' + esc(c.id) + '">' + esc(c.nama) + icon('i-arrow') + '</label></td>' +
         '<td>' + esc(c.pbm) + '</td>' +
-        '<td>' + esc(c.owner) + '</td>' +
+        '<td class="ct__owner">' + esc(c.owner) + '</td>' +
         '<td>' + fmt(c.ton) + ' ton</td>' +
         '<td><span class="ct__pct"><span class="ct__pct-bar" style="--w:' + (max ? (c.ton / max) * 100 : 0) + '%"></span>' + Math.round(share) + '%</span></td>' +
         '<td><span class="chip ' + chip.cls + '">' + chip.text + '</span></td>' +
         '</tr>';
     }).join('') : '<tr><td colspan="7" class="ct__empty">Tidak ada komoditas untuk filter ini.</td></tr>';
 
-    $('#ct-foot').innerHTML = '<tr><td colspan="4" class="ct__left">Total Keseluruhan</td>' +
+    $('#ct-foot').innerHTML = '<tr><td colspan="3" class="ct__left">Total Keseluruhan</td><td class="ct__owner"></td>' +
       '<td>' + fmt(total) + ' ton</td><td>' + (list.length ? '100%' : '-') + '</td><td>-</td></tr>';
   };
 

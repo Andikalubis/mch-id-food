@@ -207,3 +207,8 @@
     padding: 16px;
   }
 }
+
+/* Mode 2: kolom Cargo Owner disembunyikan */
+body:has(#mode-2:checked) .ct .ct__owner {
+  display: none;
+}

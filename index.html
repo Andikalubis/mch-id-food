@@ -65,7 +65,14 @@
   <!-- ===================== HEADER ===================== -->
   <header class="app-header">
     <div class="app-header__intro">
-      <h1 class="app-header__title">Cargo Monitoring</h1>
+      <div class="app-header__title-row">
+        <h1 class="app-header__title">Cargo Monitoring</h1>
+        <!-- Switch mode dashboard: Mode 2 menyembunyikan Komposisi Tonase & kolom Cargo Owner -->
+        <div class="seg seg--mode" id="mode-switch" role="radiogroup" aria-label="Mode dashboard">
+          <label class="seg__opt" data-tip="Tampilan lengkap"><input type="radio" name="mode" value="1" id="mode-1" checked><span>Mode 1</span></label>
+          <label class="seg__opt" data-tip="Tanpa tonase &amp; cargo owner"><input type="radio" name="mode" value="2" id="mode-2"><span>Mode 2</span></label>
+        </div>
+      </div>
       <p class="app-header__subtitle">Pantau informasi kapal, komoditas, petikemas/kargo, tonase dan dokumen pengiriman cargo owner</p>
     </div>
     <div class="app-header__clock">
@@ -259,7 +266,7 @@
         <div class="ct-wrap">
           <table class="ct">
             <thead>
-              <tr><th>No.</th><th class="ct__left">Komoditas</th><th>FF / PBM</th><th>Cargo Owner</th><th>Jumlah / Tonase</th><th>Persentase</th><th>Status</th></tr>
+              <tr><th>No.</th><th class="ct__left">Komoditas</th><th>FF / PBM</th><th class="ct__owner">Cargo Owner</th><th>Jumlah / Tonase</th><th>Persentase</th><th>Status</th></tr>
             </thead>
             <tbody id="ct-body"></tbody>
             <tfoot id="ct-foot"></tfoot>
